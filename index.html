@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+      integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Arima:wght@100&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.js"></script>
+    <link
+      href="https://api.mapbox.com/mapbox-gl-js/v2.14.1/mapbox-gl.css"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="" style="height: 10vh">
+      <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#"
+            ><img
+              src="Logo_space_apps.jpeg"
+              alt="Logo"
+              style="border-radius: 100%"
+              width="50px"
+          /></a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarText"
+            aria-controls="navbarText"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a
+                  class="nav-link link-danger fs-4 fw-bolder active"
+                  aria-current="page"
+                  href="#"
+                  >Fire Tracker</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link fs-4 link-dark fw-bolder active"
+                  aria-current="page"
+                  href="#"
+                  >Mapa</a
+                >
+              </li>
+            </ul>
+            <span class="navbar-text pr-3">
+              <div class="fs-4 d-inline-block fw-bolder text-dark">
+                Olá Murilo
+              </div>
+              <div
+                class="fs-4 d-inline-block fw-bolder text-dark"
+                style="margin-left: 5px"
+              >
+                <i class="fa-solid fa-user"></i>
+              </div>
+            </span>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main id="map" class="w-100" style="height: 90vh"></main>
+
+    <div
+      class="bg-dark bg-opacity-50 w-25 rounded text-light position-fixed ms-2 mb-2 bottom-0 start-0 p-3"
+    >
+      <div class="row">
+        <div class="offset-2 col-2 text-end">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <div class="col-6">Notificações</div>
+      </div>
+      <div class="row border-top border-bottom border-light border-opacity-50">
+        <div
+          class="offset-2 col-2 d-flex justify-content-end align-items-center"
+        >
+          <i class="fa-solid fa-location-dot text-danger"></i>
+        </div>
+        <div class="col-7">
+          Cidade: Ashkelon
+          <br/>  
+          País: Israel  
+          <br/>
+          Lat: 34.65008792312451
+          <br />
+          Long: 31.734813663780372
+        </div>
+      </div>
+    </div>
+
+    <script>
+      mapboxgl.accessToken =
+        "pk.eyJ1IjoiaWdvcm9zZW5hIiwiYSI6ImNsbmc4d2hkczBmOHMyc28yaGhrNmU0ZDAifQ.cxnO-S8f8PQ0IkWouKsDHQ";
+      const map = new mapboxgl.Map({
+        container: "map",
+        style: "mapbox://styles/igorosena/clngjhq9x00sf01qn515z5xwa",
+        center: [-53.253690941833696, -13.854852249398428],
+        zoom: 3,
+      });
+
+      map.addControl(new mapboxgl.NavigationControl());
+
+      map.on("load", function () {
+        let popup = new mapboxgl.Popup({ offset: 25 })
+                //.setHTML('Hello World!');
+
+            new mapboxgl.Marker()
+                .setLngLat([-126.33967110816806, 53.33050011454644])
+                .setPopup(popup)
+                .addTo(map);
+        let coordinates = [
+          [-126.34110117389551, 53.24965470830195], // ponto inferior esquerdo
+          [-126.38013989942091, 53.26170876055513], // ponto inferior direito
+          [-126.44058694987339, 53.32531289814086], // ponto superior direito
+          [-126.37258401355928, 53.34185701867966], // ponto superior esquerdo
+          [-126.2611347487529, 53.38056021469427], // fechar o polígono
+          [-126.18809456008627, 53.367412586678185], // fechar o polígono
+          [-126.0879791188195, 53.336217698638016], // fechar o polígono
+          [-126.34110117389551, 53.24965470830195], // ponto inferior esquerdo
+        ];
+        map.addSource("rectangle", {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            geometry: {
+              type: "Polygon",
+              coordinates: [coordinates],
+            },
+          },
+        });
+
+        map.addLayer({
+          id: "rectangle-layer",
+          type: "fill",
+          source: "rectangle",
+          layout: {},
+          paint: {
+            "fill-color": "#ff0000", // cor vermelha para o quadrado
+            "fill-opacity": 0.5,
+          },
+        });
+
+        popup = new mapboxgl.Popup({ offset: 25 })
+                //.setHTML('Hello World!');
+
+            new mapboxgl.Marker()
+                .setLngLat([-126.000125087549, 53.42653433010941])
+                .setPopup(popup)
+                .addTo(map);
+        coordinates = [
+          [-126.06908941787016, 53.43461062705462], // ponto inferior esquerdo
+          [-126.01367961389862, 53.49271316600513], // ponto inferior direito
+          [-125.93434285038501, 53.4713556704324], // ponto superior direito
+          [-125.94000976215483, 53.392952835445485], // ponto superior esquerdo
+          [-126.06908941787016, 53.43461062705462], // ponto inferior esquerdo
+          
+        ];
+        map.addSource("rectangle12", {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            geometry: {
+              type: "Polygon",
+              coordinates: [coordinates],
+            },
+          },
+        });
+
+        map.addLayer({
+          id: "rectangle-layer12",
+          type: "fill",
+          source: "rectangle12",
+          layout: {},
+          paint: {
+            "fill-color": "#ff0000", // cor vermelha para o quadrado
+            "fill-opacity": 0.5,
+          },
+        });
+
+        popup = new mapboxgl.Popup({ offset: 25 })
+                //.setHTML('Hello World!');
+
+            new mapboxgl.Marker()
+                .setLngLat([-54.1438282781721, -17.20827770324431])
+                .setPopup(popup)
+                .addTo(map);
+        coordinates = [
+          [ -54.39899597595828, -17.129565612039112], // ponto inferior esquerdo
+          [-54.522313346519084, -17.451890719596836], // ponto inferior direito
+          [-54.37741543611014, -17.504821453948875], // ponto superior direito
+          [-54.230976058569176, -17.56361529688745], // ponto superior esquerdo
+          [-54.0197950614838, -17.432773062205143], // ponto inferior esquerdo
+          [-54.0197950614838, -17.432773062205143], // ponto inferior esquerdo
+          [ -53.9581363762034, -17.341569016050386], // ponto inferior esquerdo
+          [-54.16777590615676, -17.12072686589446], // ponto inferior esquerdo
+          [ -54.39899597595828, -17.129565612039112], // ponto inferior esquerdo
+          
+        ];
+        map.addSource("rectangle13", {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            geometry: {
+              type: "Polygon",
+              coordinates: [coordinates],
+            },
+          },
+        });
+
+        map.addLayer({
+          id: "rectangle-layer13",
+          type: "fill",
+          source: "rectangle13",
+          layout: {},
+          paint: {
+            "fill-color": "#ff0000", // cor vermelha para o quadrado
+            "fill-opacity": 0.5,
+          },
+        });
+
+        popup = new mapboxgl.Popup({ offset: 25 })
+                //.setHTML('Hello World!');
+
+            new mapboxgl.Marker()
+                .setLngLat([34.62288700921501, 31.656405627163196])
+                .setPopup(popup)
+                .addTo(map);
+        x = 34.609413140272515;
+        y = 31.651760173532033;
+        coordinates = [
+          [x - 0.06, y - 0.06],
+          [x + 0.06, y - 0.07],
+          [x + 0.06, y + 0.06],
+          [x - 0.03, y + 0.03],
+          [x - 0.06, y - 0.06],
+        ];
+        map.addSource("rectangle2", {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            geometry: {
+              type: "Polygon",
+              coordinates: [coordinates],
+            },
+          },
+        });
+
+        map.addLayer({
+          id: "rectangle-layer2",
+          type: "fill",
+          source: "rectangle2",
+          layout: {},
+          paint: {
+            "fill-color": "#ff0000", // cor vermelha para o quadrado
+            "fill-opacity": 0.5,
+          },
+        });
+
+        popup = new mapboxgl.Popup({ offset: 25 })
+                //.setHTML('Hello World!');
+
+            new mapboxgl.Marker()
+                .setLngLat([34.638066029046875, 31.780817043360308])
+                .setPopup(popup)
+                .addTo(map);
+        coordinates = [
+          [34.62194442289334, 31.77019380888056],
+          [34.65095519665004, 31.830156022317098],
+          [34.6674346881095, 31.826947351925188],
+          [34.64725551230577, 31.76346106016269],
+        ];
+        map.addSource("rectangle3", {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            geometry: {
+              type: "Polygon",
+              coordinates: [coordinates],
+            },
+          },
+        });
+
+        map.addLayer({
+          id: "rectangle-layer3",
+          type: "fill",
+          source: "rectangle3",
+          layout: {},
+          paint: {
+            "fill-color": "#ff0000", // cor vermelha para o quadrado
+            "fill-opacity": 0.5,
+          },
+        });
+
+        coordinates = [
+          [34.65008792312451, 31.734813663780372],
+          [34.64682635826089, 31.722549141354243],
+          [34.67266139400645, 31.708968668081315],
+          [34.684591859891995, 31.73605462702687],
+          [34.65472278141337, 31.743500053147024],
+        ];
+        map.addSource("rectangle4", {
+          type: "geojson",
+          data: {
+            type: "Feature",
+            geometry: {
+              type: "Polygon",
+              coordinates: [coordinates],
+            },
+          },
+        });
+
+        popup = new mapboxgl.Popup({ offset: 25 })
+                //.setHTML('Hello World!');
+
+            new mapboxgl.Marker()
+                .setLngLat([ -97.85144827258921, 40.369377877048144])
+                .setPopup(popup)
+                .addTo(map);
+        map.addLayer({
+          id: "rectangle-layer4",
+          type: "fill",
+          source: "rectangle4",
+          layout: {},
+          paint: {
+            "fill-color": "#ff0000", // cor vermelha para o quadrado
+            "fill-opacity": 0.5,
+          },
+        });
+        // Adiciona a camada de terreno
+        map.addSource("mapbox-dem", {
+          type: "raster-dem",
+          url: "mapbox://mapbox.mapbox-terrain-dem-v1",
+          tileSize: 512,
+          maxzoom: 14,
+        });
+        
+        map.setTerrain({ source: "mapbox-dem", exaggeration: 4 });
+
+        // Adiciona a camada de edifícios 3D
+        map.addLayer({
+          id: "3d-buildings",
+          source: "composite",
+          "source-layer": "building",
+          filter: ["==", "extrude", "true"],
+          type: "fill-extrusion",
+          minzoom: 15,
+          paint: {
+            "fill-extrusion-color": "#aaa",
+            "fill-extrusion-height": ["get", "height"],
+            "fill-extrusion-base": ["get", "min_height"],
+            "fill-extrusion-opacity": 0.6,
+          },
+        });
+      });
+    </script>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
